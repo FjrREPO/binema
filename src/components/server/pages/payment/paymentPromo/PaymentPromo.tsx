@@ -83,7 +83,7 @@ function PaymentPromo({ paymentPromo }: { paymentPromo: SafePaymentPromo[] }) {
 
                 return (
                   <tr className="" key={index}>
-                    <td className="uppercase whitespace-no-wrap py-4 text-sm font-bold text-white px-6">
+                    <td className="whitespace-no-wrap py-4 text-sm font-bold text-white px-6">
                       {payPromo.promoCode}
                     </td>
                     <td className="uppercase whitespace-no-wrap py-4 text-sm text-white px-6">

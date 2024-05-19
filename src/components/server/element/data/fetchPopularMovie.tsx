@@ -2,7 +2,7 @@ const TMDB_TOKEN = process.env.NEXT_PUBLIC_TMDB_TOKEN
 
 const baseUrl = 'https://api.themoviedb.org/3/movie/';
 
-export const fetchPopularMovies = async (page = 1) => {
+export const fetchPopularMovies = async (page: any) => {
     try {
         const res = await fetch(`${baseUrl}popular?language=en-US&page=${page}`, {
             headers: {

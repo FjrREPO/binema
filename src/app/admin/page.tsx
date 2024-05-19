@@ -1,14 +1,11 @@
-'use client'
-
-import AdminNavbar from "@/components/server/element/AdminNav";
 import AdminHome from "@/components/server/pages/AdminHome";
+import { getAllPayment } from "@/utils/actions/get-all-payment";
 
-const AdminPage = () => {
-
+const AdminPage = async() => {
+  const payment = await getAllPayment()
   return (
     <div className="bg-[#333] min-h-screen">
-      <AdminNavbar />
-      <AdminHome/>
+      <AdminHome payment={payment}/>
     </div>
   );
 };

@@ -160,7 +160,7 @@ const AdminMovie: React.FC<AdminMovieProps> = ({
                                 </div>
                             </div>
                             <div className='flex flex-col p-5 text-white gap-2 justify-center'>
-                                <Link className='bg-green-600 px-5 py-2 rounded-lg flex flex-row gap-2 items-center justify-center' href={`/movie/${movie.id}/edit`}>
+                                <Link className='bg-green-600 px-5 py-2 rounded-lg flex flex-row gap-2 items-center justify-center' href={`/admin/movie/${movie.id}/edit`}>
                                     <button className='flex flex-row gap-2 items-center justify-center'>
                                         <FiEdit className='w-5 h-5' />Edit
                                     </button>

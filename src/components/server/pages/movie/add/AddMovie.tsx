@@ -80,14 +80,16 @@ function AddMovie() {
         })
     }
 
+    const [numberPage, setNumberPage] = useState(1);
+
     useEffect(() => {
         const fetchMovies = async () => {
-            const movies = await fetchPopularMovies();
+            const movies = await fetchPopularMovies(numberPage);
             setPopularMovies(movies);
         };
 
         fetchMovies();
-    }, []);
+    }, [numberPage]);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -175,7 +177,7 @@ function AddMovie() {
         : [{ value: '', label: 'No categories available' }];
 
     const genreOptions = genres.length > 0
-        ? genres.map((genre) => ({ value: genre.id, label: genre.name }))
+        ? genres.map((genre: any) => ({ value: genre.id, label: genre.name }))
         : [{ value: '', label: 'No genres available' }];
 
     const handleChangeCategory = (selectedOptions: any) => {
@@ -209,159 +211,170 @@ function AddMovie() {
     return (
         <div className="w-full">
             <AdminNavbar />
-            <h1 className='flex justify-center text-[35px] pt-5'>Tambah Data</h1>
-            <div className="flex flex-col p-5 justify-center items-center gap-5 h-fit">
-                <div className='flex flex-col gap-5'>
-                    <h1 className="flex justify-center text-lg">Judul:</h1>
-                    <input
-                        type="text"
-                        placeholder='masukkan judul'
-                        className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
-                        value={movieName}
-                        onChange={handleChangeTitle}
-                        required
-                    />
-                    <Select
-                        placeholder="Pilih Title"
-                        isClearable
-                        id='select-box'
-                        instanceId="select-box"
-                        aria-label="title"
-                        options={popularMovies.map((movie) => ({
-                            value: movie.id,
-                            label: movie.title,
-                        }))}
-                        value={
-                            selectedTitle
-                                ? { value: selectedTitle, label: movieName }
-                                : null
-                        }
-                        onChange={(option) => {
-                            setSelectedTitle(option?.value || '');
-                            setValue('title', option?.label || '');
-                        }}
-                        formatOptionLabel={(option: any) => (
-                            <div className='flex flex-row items-center gap-3 text-black duration-300'>
-                                <div>{option.label}</div>
-                            </div>
-                        )}
-                        classNames={{
-                            control: () => 'p-3 border-2',
-                            input: () => 'text-lg',
-                            option: () => 'text-lg',
-                        }}
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 6,
-                            colors: {
-                                ...theme.colors,
-                                primary: '#ffe4e6',
-                                primary25: '#ffe4e6',
-                            },
-                        })}
-                    />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <h1 className='flex justify-center text-[35px] pt-5'>Tambah Data</h1>
+                <div className="flex flex-col p-5 justify-center items-center gap-5 h-fit">
+                    <div className='flex flex-col gap-5'>
+                        <h1 className="flex justify-center text-lg">Judul:</h1>
+                        <input
+                            type="text"
+                            placeholder='masukkan judul'
+                            className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
+                            value={movieName}
+                            onChange={handleChangeTitle}
+                            required
+                        />
+                        <div className='flex flex-row text-black max-w-[80vw] min-w-[50vw] gap-5'>
+                            <Select
+                                placeholder="Pilih Title"
+                                className='max-w-[80vw] min-w-[50vw]'
+                                isClearable
+                                id='select-box'
+                                instanceId="select-box"
+                                aria-label="title"
+                                options={popularMovies.map((movie) => ({
+                                    value: movie.id,
+                                    label: movie.title,
+                                }))}
+                                value={
+                                    selectedTitle
+                                        ? { value: selectedTitle, label: movieName }
+                                        : null
+                                }
+                                onChange={(option) => {
+                                    setSelectedTitle(option?.value || '');
+                                    setValue('title', option?.label || '');
+                                }}
+                                formatOptionLabel={(option: any) => (
+                                    <div className='flex flex-row items-center gap-3 text-black duration-300'>
+                                        <div>{option.label}</div>
+                                    </div>
+                                )}
+                                classNames={{
+                                    control: () => 'p-3 border-2',
+                                    input: () => 'text-lg',
+                                    option: () => 'text-lg',
+                                }}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 6,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary: '#ffe4e6',
+                                        primary25: '#ffe4e6',
+                                    },
+                                })}
+                            />
+                            <input
+                                className='px-3 py-2 rounded text-black max-w-[60px] text-black'
+                                type="number"
+                                value={numberPage}
+                                onChange={(e: any) => setNumberPage(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className='flex flex-col'>
+                        <h1 className="flex justify-center text-lg">Pilih Genre:</h1>
+                        <Select
+                            {...register('genres')}
+                            isMulti
+                            value={selectedGenres}
+                            onChange={handleChangeGenre}
+                            id='select-box'
+                            instanceId="select-box"
+                            options={genreOptions}
+                            placeholder="Select genres..."
+                            styles={{
+                                control: (provided: any) => ({ ...provided, width: '100%' }),
+                            }}
+                            className='text-black max-w-[80vw] min-w-[50vw]'
+                        />
+                    </div>
+                    <div className='flex flex-col gap-5'>
+                        <h1 className="flex justify-center text-lg">Deskripsi:</h1>
+                        <textarea
+                            name="overview"
+                            id="overview"
+                            className='flex p-5 text-black rounded w-[50vw] h-[20vh]'
+                            value={movieOverview}
+                            onChange={handleChangeOverview}
+                            placeholder='deskripsi...'
+                        />
+                    </div>
+                    <div className='flex flex-col'>
+                        <h1 className="flex justify-center text-lg">Pilih Kategori:</h1>
+                        <Select
+                            {...register('category')}
+                            isMulti
+                            id='select-box'
+                            instanceId="select-box"
+                            value={selectedCategories}
+                            onChange={handleChangeCategory}
+                            options={categoryOptions}
+                            placeholder="Select categories..."
+                            styles={{
+                                control: (provided: any) => ({ ...provided, width: '100%' }),
+                            }}
+                            className='text-black max-w-[80vw] min-w-[50vw]'
+                            required
+                        />
+                    </div>
+                    <div>
+                        <h1 className="flex justify-center text-lg">Tanggal Rilis:</h1>
+                        <input
+                            type="date"
+                            placeholder='pilih tanggal...'
+                            className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
+                            value={movieReleaseDate}
+                            onChange={handleChangeReleaseDate}
+                        />
+                    </div>
+                    <div>
+                        <h1 className="flex justify-center text-lg">Durasi Film:</h1>
+                        <input
+                            type="text"
+                            placeholder='input durasi (dalam menit)'
+                            className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
+                            value={movieDuration}
+                            onChange={handleChangeDuration}
+                        />
+                    </div>
+                    <div>
+                        <h1 className="flex justify-center text-lg">Masukkan Link Trailer:</h1>
+                        <input
+                            type="text"
+                            placeholder='https://'
+                            className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
+                            value={selectedTitle == '' && trailerData == null ? trailerPath : trailerPath = `https://www.youtube.com/embed/${(trailerData?.key)}`}
+                            onChange={handleChangeTrailer}
+                        />
+                    </div>
+                    <div>
+                        <h1 className="flex justify-center text-lg">Gambar Poster:</h1>
+                        <ImageUpload
+                            value={(selectedTitle != '' && !poster_path) ?
+                                moviePosterPath :
+                                moviePosterPath = poster_path}
+                            onChange={(value) => setCustomValue('poster_path', value)}
+                        />
+                    </div>
+                    <div>
+                        <h1 className="flex justify-center text-lg">Gambar Backdrop:</h1>
+                        <ImageUpload
+                            value={(selectedTitle != '' && !backdrop_path) ?
+                                movieBackdropPath :
+                                movieBackdropPath = backdrop_path}
+                            onChange={(value) => setCustomValue('backdrop_path', value)}
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        className='flex text-black bg-white px-5 py-2 rounded hover:text-white hover:bg-[#333] duration-300'
+                    >
+                        Submit
+                    </button>
                 </div>
-                <div className='flex flex-col'>
-                    <h1 className="flex justify-center text-lg">Pilih Genre:</h1>
-                    <Select
-                        {...register('genres')}
-                        isMulti
-                        value={selectedGenres}
-                        onChange={handleChangeGenre}
-                        id='select-box'
-                        instanceId="select-box"
-                        options={genreOptions}
-                        placeholder="Select genres..."
-                        styles={{
-                            control: (provided: any) => ({ ...provided, width: '100%' }),
-                        }}
-                        className='text-black max-w-[80vw] min-w-[50vw]'
-                    />
-                </div>
-                <div className='flex flex-col gap-5'>
-                    <h1 className="flex justify-center text-lg">Deskripsi:</h1>
-                    <textarea
-                        name="overview"
-                        id="overview"
-                        className='flex p-5 text-black rounded w-[50vw] h-[20vh]'
-                        value={movieOverview}
-                        onChange={handleChangeOverview}
-                        placeholder='deskripsi...'
-                    />
-                </div>
-                <div className='flex flex-col'>
-                    <h1 className="flex justify-center text-lg">Pilih Kategori:</h1>
-                    <Select
-                        {...register('category')}
-                        isMulti
-                        id='select-box'
-                        instanceId="select-box"
-                        value={selectedCategories}
-                        onChange={handleChangeCategory}
-                        options={categoryOptions}
-                        placeholder="Select categories..."
-                        styles={{
-                            control: (provided: any) => ({ ...provided, width: '100%' }),
-                        }}
-                        className='text-black max-w-[80vw] min-w-[50vw]'
-                    />
-                </div>
-                <div>
-                    <h1 className="flex justify-center text-lg">Tanggal Rilis:</h1>
-                    <input
-                        type="date"
-                        placeholder='pilih tanggal...'
-                        className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
-                        value={movieReleaseDate}
-                        onChange={handleChangeReleaseDate}
-                    />
-                </div>
-                <div>
-                    <h1 className="flex justify-center text-lg">Durasi Film:</h1>
-                    <input
-                        type="text"
-                        placeholder='input durasi (dalam menit)'
-                        className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
-                        value={movieDuration}
-                        onChange={handleChangeDuration}
-                    />
-                </div>
-                <div>
-                    <h1 className="flex justify-center text-lg">Masukkan Link Trailer:</h1>
-                    <input
-                        type="text"
-                        placeholder='https://'
-                        className='px-3 py-2 rounded text-black max-w-[80vw] min-w-[50vw]'
-                        value={selectedTitle == '' && trailerData == null ? trailerPath : trailerPath = `https://www.youtube.com/embed/${(trailerData?.key)}`}
-                        onChange={handleChangeTrailer}
-                    />
-                </div>
-                <div>
-                    <h1 className="flex justify-center text-lg">Gambar Poster:</h1>
-                    <ImageUpload
-                        value={(selectedTitle != '' && !poster_path) ? 
-                        moviePosterPath : 
-                        moviePosterPath = poster_path}
-                        onChange={(value) => setCustomValue('poster_path', value)}
-                    />
-                </div>
-                <div>
-                    <h1 className="flex justify-center text-lg">Gambar Backdrop:</h1>
-                    <ImageUpload
-                        value={(selectedTitle != '' && !backdrop_path) ? 
-                        movieBackdropPath : 
-                        movieBackdropPath = backdrop_path}
-                        onChange={(value) => setCustomValue('backdrop_path', value)}
-                    />
-                </div>
-                <button
-                    type='submit'
-                    onClick={handleSubmit(onSubmit)}
-                    className='flex text-black bg-white px-5 py-2 rounded hover:text-white hover:bg-[#333] duration-300'
-                >
-                    Submit
-                </button>
-            </div>
+            </form>
         </div>
     );
 }

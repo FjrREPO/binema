@@ -6,12 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-import { SafeMovie, SafePaymentCard, SafePaymentPlan, SafePaymentPromo } from "@/utils/types/safeData"
+import { SafeMovie, SafePaymentCard, SafePaymentPlan, SafePaymentPromo, SafePayment } from "@/utils/types/safeData"
 import { FaUser } from 'react-icons/fa';
 import { MdAlternateEmail, MdDateRange } from 'react-icons/md';
 import moment from 'moment';
 
-function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }: { movie: SafeMovie, paymentPlan: SafePaymentPlan, currentUser: any, paymentCard: SafePaymentCard[], paymentPromo: SafePaymentPromo[] }) {
+function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo, allPayment }: { movie: SafeMovie, paymentPlan: SafePaymentPlan, currentUser: any, paymentCard: SafePaymentCard[], paymentPromo: SafePaymentPromo[], allPayment: SafePayment[] }) {
     const router = useRouter();
 
     const expirationTime = new Date();
@@ -25,7 +25,8 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }:
     const [methodPayment, setMethodPayment] = useState('');
     const [promoCode, setPromoCode] = useState('');
     const [expiredPayment, setExpiredPayment] = useState('');
-    const [room, setRoom] = useState(0); const [name, setName] = useState(currentUser.name);
+    const [room, setRoom] = useState(1);
+    const [name, setName] = useState(currentUser.name);
     const [email, setEmail] = useState(currentUser.email);
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,10 +77,39 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }:
             methodPayment: '',
             promoCode: '',
             status: '',
-            room: 0,
+            room: 1,
             expiredPayment: ''
         }
     });
+
+    useEffect(() => {
+        const dateStart = new Date(startTime);
+    
+        const findLargestRoom = () => {
+            let largestRoom = 0;
+            allPayment.forEach(payment => {
+                const paymentStart = new Date(payment.startTime);
+                const paymentEnd = new Date(payment.endTime);
+                if (paymentStart <= dateStart && paymentEnd > dateStart && payment.status !== 'canceled' && payment.room > largestRoom) {
+                    largestRoom = payment.room;
+                }
+            });
+            return largestRoom;
+        };
+
+        const findLargestRoom2 = () => {
+            let largestRoom2 = findLargestRoom()
+            allPayment.forEach(payment => {
+                const largestRoom3 = payment.room
+                if (largestRoom3 >= largestRoom2) {
+                    largestRoom2 = largestRoom3;
+                }
+            });
+            return largestRoom2;
+        };
+    
+        setRoom(findLargestRoom2() + 1);
+    }, [startTime, allPayment]);    
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setIsLoading(true);
@@ -89,6 +119,10 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }:
             const formattedExpiredPayment = moment(expiredPayment).toISOString();
             const movieDuration = parseInt(movie.movieDuration) + 30;
             const endTime = moment(startTime).add(movieDuration, 'minutes').toISOString();
+            const dateStart = new Date(startTime);
+
+            console.log('ruang = ',room)
+
             const newData = {
                 ...data,
                 movieId: movie.id,
@@ -100,17 +134,24 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }:
                 packageName: paymentPlan.packageName,
                 methodPayment: methodPayment,
                 promoCode: promoCode,
+                room: room,
                 status: 'pending',
                 expiredPayment: formattedExpiredPayment,
                 startTime: formattedStartTime,
                 endTime: endTime
             };
 
-            if (methodPayment === '') {
+            if (methodPayment == '') {
                 await Swal.fire({
                     icon: 'warning',
                     title: 'Warning',
                     text: 'Isi data dahulu',
+                });
+            } else if (room > 6) {
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Ruangan penuh, coba pada jam lainnya!',
                 });
             } else {
                 await axios.post(`/api/payment/`, newData);
@@ -153,7 +194,7 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo }:
             });
             setStartTime('');
             event.target.value = '';
-            (inputRef.current ?? { blur: () => {} }).blur();
+            (inputRef.current ?? { blur: () => { } }).blur();
         } else {
             setStartTime(selectedDateTime);
         }

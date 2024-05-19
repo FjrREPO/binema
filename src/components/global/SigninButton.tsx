@@ -20,9 +20,9 @@ const SigninButton: React.FC<SigninButtonProps> = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <Loading/>
-  } else {
+  // if (loading) {
+  //   return <Loading/>
+  // } else {
     return (
       <div className="flex gap-4 ml-auto items-center">
         {session && session.user ? (
@@ -49,7 +49,7 @@ const SigninButton: React.FC<SigninButtonProps> = () => {
         )}
       </div>
     );
-  }
+  // }
 };
 
 export default SigninButton;

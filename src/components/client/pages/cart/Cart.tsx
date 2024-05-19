@@ -1,24 +1,11 @@
 'use client'
 
 import BackButton from "@/components/global/property/BackButton"
-import { SafeMovie, SafePayment, SafePaymentCard, SafePaymentPromo } from "@/utils/types/safeData"
+import { SafeMovie, SafePayment, SafePaymentPromo } from "@/utils/types/safeData"
 import CountdownTimer from "../../element/CountdownTimet";
-import { IoMdClose } from "react-icons/io";
-import { useState } from "react";
-import { motion, AnimatePresence } from 'framer-motion'
 
-function Cart({ payment, movie, paymentPromo, paymentCard }: { payment: SafePayment[], movie: SafeMovie[], paymentPromo: SafePaymentPromo[], paymentCard: SafePaymentCard[] }) {
+function Cart({ payment, movie, paymentPromo }: { payment: SafePayment[], movie: SafeMovie[], paymentPromo: SafePaymentPromo[] }) {
     const now = new Date();
-
-    const [openModal, setOpenModal] = useState(false)
-
-    const handleOpenModal = () => {
-        setOpenModal(true)
-    }
-
-    const handleCloseModal = () => {
-        setOpenModal(false)
-    }
 
     return (
         <div>
@@ -33,7 +20,7 @@ function Cart({ payment, movie, paymentPromo, paymentCard }: { payment: SafePaym
                             .map((pay: SafePayment, index: number) => {
                                 const matchedMovie = movie.find(mov => mov.id === pay.movieId);
                                 const matchedPromo = paymentPromo.find(promo => promo.promoCode === pay.promoCode);
-                                const matchedCard = paymentCard.find(card => card.nameCard === pay.methodPayment);
+                                
                                 return (
                                     <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8" key={index}>
                                         <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
@@ -90,11 +77,12 @@ function Cart({ payment, movie, paymentPromo, paymentCard }: { payment: SafePaym
                                                     </dl>
                                                 </div>
 
-                                                <button
-                                                    onClick={handleOpenModal}
+                                                <a
+                                                    href={`/cart/${pay.id}`}
                                                     className="flex w-full items-center justify-center rounded-lg border-white border-2 px-5 py-2.5 text-sm font-medium text-white hover:bg-white hover:text-gray-800 duration-300 focus:outline-none focus:ring-4 bg-primary-600 bg-primary-700 focus:ring-primary-800"
-                                                >Lanjut Pembayaran
-                                                </button>
+                                                >
+                                                    Lanjut Pembayaran
+                                                </a>
 
                                                 <span className="flex w-full justify-center">
                                                     Countdown bayar : <span className="font-bold pl-2"><CountdownTimer targetDate={pay.expiredPayment.toString()} /></span>
@@ -111,69 +99,6 @@ function Cart({ payment, movie, paymentPromo, paymentCard }: { payment: SafePaym
                                                 </div>
                                             </div>
                                         </div>
-                                        <AnimatePresence>
-                                            {openModal && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, scale: 0.9 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
-                                                    exit={{ opacity: 0, scale: 0.9 }}
-                                                    className="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full h-full backdrop-blur-sm"
-                                                >
-                                                    <div className="absolute items-center justify-center self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 w-full max-w-md max-h-full">
-                                                        <div className="relative rounded-lg shadow bg-gray-700">
-                                                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
-                                                                <h3 className="text-lg font-semibold text-white">
-                                                                    Pembayaran
-                                                                </h3>
-                                                                <button type="button" data-modal-toggle="crypto-modal">
-                                                                    <IoMdClose className="text-gray-400 bg-transparent rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white" onClick={handleCloseModal} />
-                                                                    <span className="sr-only">Close modal</span>
-                                                                </button>
-                                                            </div>
-                                                            <div className="p-4 md:p-5">
-                                                                <p className="text-sm font-normal text-gray-400">Lakukan pembayaran sebelum countdown pembayaran habis.</p>
-                                                                <ul className="my-4 space-y-3">
-                                                                    <li>
-                                                                        <div>
-                                                                            <div className="flex items-center p-3 text-base font-bold rounded-lg group hover:shadow bg-gray-600 hover:bg-gray-500 text-white">
-                                                                                <span className="flex-1 ms-3 whitespace-nowrap">Metode  {matchedCard?.nameCard}</span>
-                                                                                <span className="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs font-medium text-gray-500 rounded bg-gray-700 text-gray-400">Popular</span>
-                                                                            </div>
-                                                                            <img src={matchedCard?.imageCard} alt="" />
-                                                                        </div>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#" className="flex items-center p-3 text-base font-bold rounded-lg group hover:shadow bg-gray-600 hover:bg-gray-500 text-white">
-                                                                            <span className="flex-1 ms-3 whitespace-nowrap">Coinbase Wallet</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#" className="flex items-center p-3 text-base font-bold rounded-lg group hover:shadow bg-gray-600 hover:bg-gray-500 text-white">
-                                                                            <span className="flex-1 ms-3 whitespace-nowrap">Opera Wallet</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#" className="flex items-center p-3 text-base font-bold rounded-lg group hover:shadow bg-gray-600 hover:bg-gray-500 text-white">
-                                                                            <span className="flex-1 ms-3 whitespace-nowrap">WalletConnect</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#" className="flex items-center p-3 text-base font-bold rounded-lg group hover:shadow bg-gray-600 hover:bg-gray-500 text-white">
-                                                                            <span className="flex-1 ms-3 whitespace-nowrap">Fortmatic</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                                <div>
-                                                                    <a href="#" className="inline-flex items-center text-xs font-normal text-gray-500 hover:underline text-gray-400">
-
-                                                                        Why do I need to connect with my wallet?</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
                                     </div>
                                 )
                             })
