@@ -5,6 +5,16 @@ import { useState } from "react"
 import { FaBell } from "react-icons/fa"
 import { IoMdClose } from "react-icons/io"
 
+import { format } from 'date-fns';
+
+export const formatDate = (dateString: any) => {
+  const date = new Date(dateString);
+
+  const formattedDate = format(date, 'HH:mm:ss dd MMM yyyy');
+
+  return formattedDate;
+};
+
 function NotificationNav({ pay }: { pay: SafePayment[] }) {
   const [openNotif, setOpenNotif] = useState(false)
 
@@ -31,7 +41,7 @@ function NotificationNav({ pay }: { pay: SafePayment[] }) {
                   <div className="flex flex-col text-sm items-center">
                     <span>Detail pembayaran anda telah dikirim ke email {payment.userEmail}</span>
                     <span>id transaksi = {payment.id}</span>
-                    <span>tanggal pemesanan = 12</span>
+                    <span className="block">tanggal pemesanan = {formatDate(payment.createdAt.toString())}</span>
                     <span>Cek email anda untuk melihat slip pembayaran</span>
                     <a href="https://mail.google.com" target="blank">
                       <button className="flex border-2 border-white px-5 py-2 rounded-lg w-fit h-fit mt-2 duration-200 hover:bg-white hover:text-gray-900">
