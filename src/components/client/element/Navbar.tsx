@@ -3,9 +3,17 @@ import SearchBox from "@/components/client/element/SearchBox";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { FaBell, FaBookmark, FaShoppingCart } from "react-icons/fa";
+import { getAllPayment } from "@/utils/actions/get-all-payment";
+import getCurrentUser from "@/utils/actions/get-current-user";
+import NotificationNav from "./NotificationNav";
 
 const Navbar = async () => {
     const session = await getServerSession(authOptions);
+    const payment = await getAllPayment()
+    const currentUser = await getCurrentUser()
+
+    const paymentUserId = payment.filter((pay: any) => (pay.userId) == currentUser?.id)
+    const successfulPayments = payment.filter(pay => pay.status === 'success');
 
     return (
         <div className="absolute inset-0 z-30 h-fit">
@@ -19,8 +27,17 @@ const Navbar = async () => {
                 </div>
                 <div className="flex flex-row gap-3 sm:gap-5 items-center">
                     <a href="/favorites"><FaBookmark className="w-[28px] h-[28px] duration-300 hover:text-[#d4b60f]" /></a>
-                    <a href="#"><FaBell className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></a>
-                    <a href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]"/></a>
+                    <a href="#" className="w-fit h-fit">
+                        {paymentUserId.length > 0 && successfulPayments.length > 0
+                            ? (
+                                <>
+                                    <NotificationNav pay={successfulPayments} />
+                                </>
+                            )
+                            : <></>
+                        }
+                    </a>
+                    <a href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></a>
                     <SigninButton />
                 </div>
             </div>

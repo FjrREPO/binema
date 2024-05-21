@@ -17,7 +17,7 @@ function CartDetail({ payment, paymentCard }: { payment: SafePayment, paymentCar
                             src={matchedCard?.imageCard || ''}
                             alt={matchedCard?.nameCard}
                             loading="lazy"
-                            className="w-[100px] h-fit flex animate-bounce"
+                            className="w-[100px] h-fit flex animate-bounce rounded-lg"
                         />
                     </div>
                     <div>
