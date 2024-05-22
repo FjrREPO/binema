@@ -36,7 +36,7 @@ function AdminPayment({ paymentPlan, paymentCard, paymentPromo, payment, movie }
                     onClick={() => handleMenu('Add Pricing')}
                     className={`w-full text-center text-sm py-3 duration-300 ${selectedMenu === 'Add Pricing' ? 'bg-green-600' : 'bg-gray-500'}`}
                 >
-                    Tambah Pembayaran
+                    Tambah Paket
                 </a>
                 <a
                     href="#"

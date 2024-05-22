@@ -11,6 +11,9 @@ import { SafeMovie, SafePayment } from '@/utils/types/safeData';
 import { GrUpdate } from 'react-icons/gr';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
+import EmailPage from '@/components/global/email/EmailPage';
+import getPaymentByIdString from '@/utils/actions/get-payment-byidstring';
+import getMovieByIdString from '@/utils/actions/get-movie-byidstring';
 
 function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMovie[] }) {
     const router = useRouter();
@@ -44,7 +47,26 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
     const handleUpdateData = async () => {
         try {
             const updates = Object.entries(selectedStatus).map(([id, status]) => ({ id, status }));
-            console.log('data = ', {updates})
+            for (const update of updates) {
+                if (update.status === 'success') {
+                    const paymentById = await getPaymentByIdString(update.id)
+                    const movieById = await getMovieByIdString(paymentById?.movieId ?? "")
+                    const styledHtml = `${<EmailPage payment={paymentById} movie={movieById} />}`;
+    
+                    await fetch("/api/email", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            //to: paymentById?.userEmail,
+                            to: 'jossfajar27@gmail.com',
+                            subject: 'Binema',
+                            //from: process.env.FROM_EMAIL,
+                            from: 'onboarding@resend.dev',
+                            html: styledHtml,
+                        }),
+                    });
+                }
+            }
+
             await axios.put('/api/payment/statusPayment', { updates });
             Swal.fire('Data updated successfully!', '', 'success');
             router.refresh();
@@ -76,14 +98,6 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
 
     const handlePageChange = ({ selected }: { selected: number }) => {
         setCurrentPage(selected);
-    };
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setFilterStatus(event.target.value);
     };
 
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -186,7 +200,7 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                                             {pay.id}
                                         </td>
                                         <td className="whitespace-no-wrap py-4 text-sm font-normal text-white px-6 table-cell">
-                                        <Select
+                                            <Select
                                                 id="select-box"
                                                 options={[
                                                     { value: 'pending', label: 'Pending' },

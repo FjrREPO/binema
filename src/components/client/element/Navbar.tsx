@@ -6,6 +6,7 @@ import { FaBell, FaBookmark, FaShoppingCart } from "react-icons/fa";
 import { getAllPayment } from "@/utils/actions/get-all-payment";
 import getCurrentUser from "@/utils/actions/get-current-user";
 import NotificationNav from "./NotificationNav";
+import Link from "next/link";
 
 const Navbar = async () => {
     const session = await getServerSession(authOptions);
@@ -26,8 +27,8 @@ const Navbar = async () => {
                     <img src="https://res.cloudinary.com/dutlw7bko/image/upload/v1715650495/Cinema/Logo/Cuplikan_layar_2024-05-14_083355_jr8lu6.png" className="w-[60px] rounded-lg h-full" alt="" />
                 </div>
                 <div className="flex flex-row gap-3 sm:gap-5 items-center">
-                    <a href="/favorites"><FaBookmark className="w-[28px] h-[28px] duration-300 hover:text-[#d4b60f]" /></a>
-                    <a href="#" className="w-fit h-fit">
+                    <Link href="/favorites"><FaBookmark className="w-[28px] h-[28px] duration-300 hover:text-[#d4b60f]" /></Link>
+                    <Link href="#" className="w-fit h-fit">
                         {paymentUserId.length > 0 && successfulPayments.length > 0
                             ? (
                                 <>
@@ -36,8 +37,8 @@ const Navbar = async () => {
                             )
                             : <></>
                         }
-                    </a>
-                    <a href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></a>
+                    </Link>
+                    <Link href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></Link>
                     <SigninButton />
                 </div>
             </div>

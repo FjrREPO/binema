@@ -101,7 +101,9 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo, a
             let largestRoom2 = findLargestRoom()
             allPayment.forEach(payment => {
                 const largestRoom3 = payment.room
-                if (largestRoom3 >= largestRoom2) {
+                const paymentStart = new Date(payment.startTime);
+                const paymentEnd = new Date(payment.endTime);
+                if (paymentStart <= dateStart && paymentEnd > dateStart && largestRoom3 >= largestRoom2) {
                     largestRoom2 = largestRoom3;
                 }
             });
