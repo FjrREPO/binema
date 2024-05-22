@@ -11,13 +11,16 @@ import { SafeMovie, SafePayment } from '@/utils/types/safeData';
 import { GrUpdate } from 'react-icons/gr';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
-import EmailPage from '@/components/global/email/EmailPage';
-import getPaymentByIdString from '@/utils/actions/get-payment-byidstring';
-import getMovieByIdString from '@/utils/actions/get-movie-byidstring';
+import { EmailPage } from '@/components/global/email/EmailPage';
+
+interface IParams {
+    paymentId?: string
+}
 
 function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMovie[] }) {
     const router = useRouter();
     const [selectedStatus, setSelectedStatus] = useState<{ [key: string]: string }>({});
+    const [paymentId, setPaymentId] = useState<IParams>({});
 
     const handleClickDelete = (id: string) => {
         onDeleted(id);
@@ -49,10 +52,6 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
             const updates = Object.entries(selectedStatus).map(([id, status]) => ({ id, status }));
             for (const update of updates) {
                 if (update.status === 'success') {
-                    const paymentById = await getPaymentByIdString(update.id)
-                    const movieById = await getMovieByIdString(paymentById?.movieId ?? "")
-                    const styledHtml = `${<EmailPage payment={paymentById} movie={movieById} />}`;
-    
                     await fetch("/api/email", {
                         method: "POST",
                         body: JSON.stringify({
@@ -60,8 +59,7 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                             to: 'jossfajar27@gmail.com',
                             subject: 'Binema',
                             //from: process.env.FROM_EMAIL,
-                            from: 'onboarding@resend.dev',
-                            html: styledHtml,
+                            from: 'onboarding@resend.dev'
                         }),
                     });
                 }
