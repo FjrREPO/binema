@@ -29,14 +29,7 @@ const Navbar = async () => {
                 <div className="flex flex-row gap-3 sm:gap-5 items-center">
                     <Link href="/favorites"><FaBookmark className="w-[28px] h-[28px] duration-300 hover:text-[#d4b60f]" /></Link>
                     <Link href="#" className="w-fit h-fit">
-                        {paymentUserId.length > 0 && successfulPayments.length > 0
-                            ? (
-                                <>
-                                    <NotificationNav pay={successfulPayments} />
-                                </>
-                            )
-                            : <></>
-                        }
+                        <NotificationNav pay={successfulPayments} paymentUserId={paymentUserId}/>
                     </Link>
                     <Link href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></Link>
                     <SigninButton />

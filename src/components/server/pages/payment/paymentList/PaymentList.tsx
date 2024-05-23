@@ -8,19 +8,10 @@ import { MdDeleteForever, MdPlaylistAdd } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { SafeMovie, SafePayment } from '@/utils/types/safeData';
-import { GrUpdate } from 'react-icons/gr';
 import ReactPaginate from 'react-paginate';
-import Select from 'react-select';
-import { EmailPage } from '@/components/global/email/EmailPage';
-
-interface IParams {
-    paymentId?: string
-}
 
 function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMovie[] }) {
     const router = useRouter();
-    const [selectedStatus, setSelectedStatus] = useState<{ [key: string]: string }>({});
-    const [paymentId, setPaymentId] = useState<IParams>({});
 
     const handleClickDelete = (id: string) => {
         onDeleted(id);
@@ -46,32 +37,6 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
             throw error;
         }
     }, [router]);
-
-    const handleUpdateData = async () => {
-        try {
-            const updates = Object.entries(selectedStatus).map(([id, status]) => ({ id, status }));
-            for (const update of updates) {
-                if (update.status === 'success') {
-                    await fetch("/api/email", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            //to: paymentById?.userEmail,
-                            to: 'jossfajar27@gmail.com',
-                            subject: 'Binema',
-                            //from: process.env.FROM_EMAIL,
-                            from: 'onboarding@resend.dev'
-                        }),
-                    });
-                }
-            }
-
-            await axios.put('/api/payment/statusPayment', { updates });
-            Swal.fire('Data updated successfully!', '', 'success');
-            router.refresh();
-        } catch (error) {
-            throw error;
-        }
-    };
 
     const formatDateTime = (timestamp: number) => {
         const date = new Date(timestamp);
@@ -150,12 +115,6 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                                     <option value="status-desc">Status (DESC)</option>
                                 </select>
                             </div>
-                            <div className="inline-flex cursor-pointer items-center rounded-lg border border-gray-400 bg-white py-2 px-3 text-center text-sm font-medium text-black shadow hover:bg-gray-700 hover:text-white duration-300 focus:shadow">
-                                <button type="button" className="flex flex-row gap-1 items-center" onClick={handleUpdateData}>
-                                    <GrUpdate className="w-4 h-4" />
-                                    Update Data
-                                </button>
-                            </div>
                             <a
                                 href="/admin/payment/paymentMethod/add"
                                 className="inline-flex cursor-pointer items-center rounded-lg border border-gray-400 bg-white py-2 px-3 text-center text-sm font-medium text-black shadow hover:bg-[#3B8AE5] hover:text-white duration-300 focus:shadow"
@@ -198,43 +157,7 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                                             {pay.id}
                                         </td>
                                         <td className="whitespace-no-wrap py-4 text-sm font-normal text-white px-6 table-cell">
-                                            <Select
-                                                id="select-box"
-                                                options={[
-                                                    { value: 'pending', label: 'Pending' },
-                                                    { value: 'success', label: 'Success' },
-                                                    { value: 'canceled', label: 'Canceled' },
-                                                ]}
-                                                value={{
-                                                    value: selectedStatus[pay.id] || pay.status,
-                                                    label: selectedStatus[pay.id] || pay.status,
-                                                }}
-                                                onChange={(option: any) =>
-                                                    setSelectedStatus((prev) => ({
-                                                        ...prev,
-                                                        [pay.id]: option?.value || '',
-                                                    }))
-                                                }
-                                                formatOptionLabel={(option: any) => (
-                                                    <div className="flex flex-row items-center gap-3 text-black duration-300">
-                                                        <div>{option.label}</div>
-                                                    </div>
-                                                )}
-                                                classNames={{
-                                                    control: () => 'p-3 border-2',
-                                                    input: () => 'text-lg w-[200px]',
-                                                    option: () => 'text-lg',
-                                                }}
-                                                theme={(theme: any) => ({
-                                                    ...theme,
-                                                    borderRadius: 6,
-                                                    colors: {
-                                                        ...theme.colors,
-                                                        primary: '#ffe4e6',
-                                                        primary25: '#ffe4e6',
-                                                    },
-                                                })}
-                                            />
+                                            {pay.status}
                                         </td>
                                         <td className="whitespace-no-wrap py-4 text-sm font-normal text-white px-6 table-cell">
                                             {matchedMovie?.title}
@@ -249,7 +172,7 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                                             Rp {pay.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                                         </td>
                                         <td className="whitespace-no-wrap py-4 text-sm font-normal text-white px-6 lg:table-cell flex flex-row gap-5">
-                                            <Link className='bg-green-600 px-5 py-2 rounded-lg flex flex-row gap-2 items-center justify-center sm:mb-2' href={`/admin/payment/paymentMethod/${pay.id}/edit`}>
+                                            <Link className='bg-green-600 px-5 py-2 rounded-lg flex flex-row gap-2 items-center justify-center sm:mb-2' href={`/admin/payment/paymentList/${pay.id}/edit`}>
                                                 <button className='flex flex-row gap-2 items-center justify-center'>
                                                     <FiEdit className='w-5 h-5' />Edit
                                                 </button>

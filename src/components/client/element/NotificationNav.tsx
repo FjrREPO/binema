@@ -15,7 +15,7 @@ export const formatDate = (dateString: any) => {
   return formattedDate;
 };
 
-function NotificationNav({ pay }: { pay: SafePayment[] }) {
+function NotificationNav({ pay, paymentUserId }: { pay: SafePayment[], paymentUserId: any }) {
   const [openNotif, setOpenNotif] = useState(false)
 
   const handleOpenNotif = () => {
@@ -25,16 +25,16 @@ function NotificationNav({ pay }: { pay: SafePayment[] }) {
   return (
     <div className="">
       <FaBell className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" onClick={() => handleOpenNotif()} />
-      {openNotif && (
+      {openNotif && paymentUserId.length > 0 && pay.length > 0 && (
         <>
-          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10" onClick={handleOpenNotif}></div>
-          <div className="absolute cursor-default top-[50vh] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50vw] h-auto p-5 rounded-[20px] bg-gray-900 z-20">
-            <h1 className="text-lg text-center">Notification</h1>
+          <div className="fixed select-auto top-0 left-0 w-full h-full bg-black opacity-50 z-10" onClick={handleOpenNotif}></div>
+          <div className="absolute select-auto cursor-default z-20 top-[50vh] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50vw] h-auto p-5 rounded-[20px] bg-gray-900 z-20">
+            <h1 className="text-lg text-center select-text">Notification</h1>
             <IoMdClose
               className="absolute top-5 right-5 w-[30px] h-[30px] cursor-pointer"
               onClick={() => handleOpenNotif()}
             />
-            <div className="flex flex-col gap-10 mt-10 items-center">
+            <div className="flex flex-col select-text realtive gap-10 mt-10 items-center">
               {pay.map((payment: any, index: any) => (
                 <div key={index} className="flex flex-col items-center">
                   <h1 className="text-lg mb-2">Pembayaran Berhasil!</h1>
@@ -51,6 +51,21 @@ function NotificationNav({ pay }: { pay: SafePayment[] }) {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </>
+      )}
+      {openNotif && !(paymentUserId.length > 0 && pay.length > 0) && (
+        <>
+          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10" onClick={handleOpenNotif}></div>
+          <div className="absolute cursor-default top-[50vh] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50vw] h-auto p-5 rounded-[20px] bg-gray-900 z-20">
+            <h1 className="text-lg text-center">Notification</h1>
+            <IoMdClose
+              className="absolute top-5 right-5 w-[30px] h-[30px] cursor-pointer"
+              onClick={() => handleOpenNotif()}
+            />
+            <div className="flex flex-col gap-10 mt-10 items-center">
+              <h1>Tidak ada Notifikasi!</h1>
             </div>
           </div>
         </>

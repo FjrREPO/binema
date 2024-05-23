@@ -1,31 +1,18 @@
-import prisma from '@/lib/prisma'
+import { PrismaClient } from '@prisma/client';
 
-export default async function getMovieByIdString(
-    params: string) {
+const prisma = new PrismaClient();
+
+export const getPaymentByIdParams = async (paymentId: string) => {
     try {
-        const movieId = params
+        const payment = await prisma.payment.findUnique({
+            where: { id: paymentId },
+        });
 
-        const movie = await prisma.movie.findUnique({
-            where: {
-                id: movieId
-            },
-            include: {
-                user: true
-            }
-        })
-        if (!movie) return null
-
-        return {
-            ...movie,
-            createdAt: movie.createdAt.toISOString(),
-            user: {
-                ...movie.user,
-                createdAt: movie.user.createdAt.toISOString(),
-                updatedAt: movie.user.updatedAt.toISOString(),
-                emailVerified: movie.user.emailVerified?.toString() || null
-            }
-        }
-    } catch (err: any) {
-        throw new Error(err)
+        return payment;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error fetching payment data');
+    } finally {
+        await prisma.$disconnect();
     }
-}
+};
