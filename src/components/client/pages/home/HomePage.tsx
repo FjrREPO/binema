@@ -121,7 +121,7 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
                                     animate={{ x: 0 }}
                                     transition={{
                                         ease: "linear",
-                                        duration: 2,
+                                        duration: 1,
                                         x: { duration: 1 }
                                     }}
                                     className={`cursor-pointer ml-10 ${isCurrentImage ? 'opacity-100' : 'opacity-100'}`}
@@ -131,17 +131,20 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{
                                             opacity: 1,
-                                            width: isCurrentImage ? 'h-[180px]' : 'h-[180px]',
                                             transitionEnd: { overflow: 'hidden' }
                                         }}
+                                        exit={{ opacity: 0, x: 20 }}
                                         transition={{ duration: 1 }}
                                         className="flex flex-row h-auto items-center-md rounded-lg gap-5"
                                     >
-                                        <img
+                                        <motion.img
                                             src={isCurrentImage ? `https://image.tmdb.org/t/p/w300/${lastSegmentBack}` : `https://image.tmdb.org/t/p/w154/${lastSegmentPoster}`}
                                             alt={movie.title}
                                             loading="lazy"
-                                            className={`rounded-lg ${isCurrentImage ? 'w-[320px] h-fit md:h-[180px]' : 'w-[120px] h-fit md:h-[180px]'}`}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1, width: isCurrentImage ? 320 : 120 }}
+                                            transition={{ duration: 0.6 }}
+                                            className={`rounded-lg ${isCurrentImage ? 'w-[320px] h-[120px] md:h-[180px]' : 'w-[120px] h-[120px] md:h-[180px]'}`}
                                         />
                                         {isCurrentImage && (
                                             <div className='absolute w-full h-full backdrop-brightness-75'>
