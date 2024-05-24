@@ -2,7 +2,7 @@ import SigninButton from "@/components/global/SigninButton";
 import SearchBox from "@/components/client/element/SearchBox";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { FaBell, FaBookmark, FaShoppingCart } from "react-icons/fa";
+import { FaBookmark, FaShoppingCart } from "react-icons/fa";
 import { getAllPayment } from "@/utils/actions/get-all-payment";
 import getCurrentUser from "@/utils/actions/get-current-user";
 import NotificationNav from "./NotificationNav";
