@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { SafeMovie, SafePayment } from '@/utils/types/safeData';
 import ReactPaginate from 'react-paginate';
+import { GrUpdate } from "react-icons/gr";
 
 function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMovie[] }) {
     const router = useRouter();
@@ -37,6 +38,16 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
             throw error;
         }
     }, [router]);
+
+    const handleUpdateData = async () => {
+        try {
+            await axios.put("/api/payment/statusPayment");
+            Swal.fire("Data updated successfully!", "", "success");
+            router.refresh()
+        } catch (error) {
+            throw error
+        }
+    };
 
     const formatDateTime = (timestamp: number) => {
         const date = new Date(timestamp);
@@ -114,6 +125,12 @@ function PaymentList({ payment, movie }: { payment: SafePayment[], movie: SafeMo
                                     <option value="status-asc">Status (ASC)</option>
                                     <option value="status-desc">Status (DESC)</option>
                                 </select>
+                            </div>
+                            <div className="inline-flex cursor-pointer items-center rounded-lg border border-gray-400 bg-white py-2 px-3 text-center text-sm font-medium text-black shadow hover:bg-gray-700 hover:text-white duration-300 focus:shadow">
+                                <button type="button" className="flex flex-row gap-1 items-center" onClick={handleUpdateData}>
+                                    <GrUpdate className="w-4 h-4" />
+                                    Update Data
+                                </button>
                             </div>
                             <a
                                 href="/admin/payment/paymentMethod/add"

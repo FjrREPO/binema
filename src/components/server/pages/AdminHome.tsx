@@ -3,7 +3,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 import { SafePayment } from "@/utils/types/safeData";
 import { LineChart } from "../element/chart/LineChart";
-import AdminNavbar from "../element/AdminNav";
 import { DoughnutChart } from "../element/chart/DoughnutChart";
 import { FaChartLine, FaChartPie } from "react-icons/fa";
 import { useState } from "react";
@@ -21,7 +20,6 @@ const AdminHome = ({ payment }: { payment: SafePayment[] }) => {
 
     return (
         <>
-            <AdminNavbar />
             <div className="flex w-full h-full mt-5 px-5">
                 <div className="flex w-full h-full justify-center">
                     <div className="flex flex-col">

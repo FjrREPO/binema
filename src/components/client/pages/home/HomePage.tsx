@@ -21,7 +21,7 @@ interface MoviesProps {
 
 const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [visibleThumbnails, setVisibleThumbnails] = useState(9);
+    const [visibleThumbnails, setVisibleThumbnails] = useState(7);
 
     const filteredMovies = movies.filter(movie => movie.category.includes('Popular Movies'));
 
@@ -36,7 +36,7 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
     const updateThumbnails = debounce(() => {
         const containerWidth = window.innerWidth;
         const thumbnailWidth = 120;
-        const maxVisibleThumbnails = Math.min(9, Math.floor(containerWidth / thumbnailWidth));
+        const maxVisibleThumbnails = Math.min(7, Math.floor(containerWidth / thumbnailWidth));
         setVisibleThumbnails(maxVisibleThumbnails - 1);
     }, 300);
 
@@ -106,7 +106,7 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
                     </SwiperSlide>
                 ))}
             </Swiper>
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30 w-full">
+            <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 z-20 w-full">
                 <div className="flex overflow-x-auto space-x-4 justify-center">
                     {getVisibleThumbnails().map((index) => {
                         if (index < 9) {
@@ -124,7 +124,7 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
                                         duration: 1,
                                         x: { duration: 1 }
                                     }}
-                                    className={`cursor-pointer ml-10 ${isCurrentImage ? 'opacity-100' : 'opacity-100'}`}
+                                    className={`cursor-pointer ml-10`}
                                     onClick={() => handleThumbnailClick(index)}
                                 >
                                     <motion.div
@@ -142,9 +142,9 @@ const HomePage: React.FC<MoviesProps> = ({ movies, currentUser }) => {
                                             alt={movie.title}
                                             loading="lazy"
                                             initial={{ opacity: 0, scale: 0.9 }}
-                                            animate={{ opacity: 1, scale: 1, width: isCurrentImage ? 320 : 120 }}
+                                            animate={{ opacity: 1, scale: 1, width: isCurrentImage ? 420 : 160 }}
                                             transition={{ duration: 0.6 }}
-                                            className={`rounded-lg ${isCurrentImage ? 'w-[320px] h-[120px] md:h-[180px]' : 'w-[120px] h-[120px] md:h-[180px]'}`}
+                                            className={`rounded-lg ${isCurrentImage ? 'h-[120px] md:h-[240px]' : 'h-[120px] md:h-[240px]'}`}
                                         />
                                         {isCurrentImage && (
                                             <div className='absolute w-full h-full backdrop-brightness-75'>

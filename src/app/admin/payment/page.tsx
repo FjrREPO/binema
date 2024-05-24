@@ -21,7 +21,6 @@ async function page() {
 
     return (
         <div className="bg-[#333] min-h-screen">
-            <AdminNavbar />
             <AdminPayment paymentPlan={paymentPlan} paymentCard={paymentCard} paymentPromo={paymentPromo} payment={payment} movie={movie}/>
         </div>
     )
