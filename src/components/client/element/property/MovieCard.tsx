@@ -17,11 +17,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, currentUser }) => {
             <a href={`/movie/${movie.id}`} className="block relative">
                 <img
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    className="w-full rounded"
+                    className="w-full rounded-lg"
                     loading="lazy"
                     alt={`Poster for ${movie.title}`}
                     style={{
-                        transform: hovered ? 'scale(1.1)' : 'scale(1)',
+                        transform: hovered ? 'scale(1.05)' : 'scale(1)',
                         transition: 'transform 0.3s ease',
                     }}
                     onMouseEnter={() => setHovered(true)}

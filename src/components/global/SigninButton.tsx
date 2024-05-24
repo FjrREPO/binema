@@ -10,7 +10,7 @@ interface SigninButtonProps {}
 
 const SigninButton: React.FC<SigninButtonProps> = () => {
   const { data: session } = useSession();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {

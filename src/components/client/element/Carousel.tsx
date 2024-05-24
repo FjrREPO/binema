@@ -32,7 +32,7 @@ const Carousel = ({ movie }: { movie: any }) => {
         <>
             <div>
                 <CarouselItemImage movie={movie} />
-                <CarouselItemContent movie={movie} />
+                {/* <CarouselItemContent movie={movie} /> */}
             </div>
         </>
     );
