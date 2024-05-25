@@ -35,7 +35,7 @@ const MovieDetails: React.FC<MovieClientProps> = ({
                         />
                         <div className="p-2 h-fit rounded-[20px]"
                         >
-                            <h2 className="text-[50px] mb-3 font-bold">
+                            <h2 className="text-[50px] mb-3 font-bold text-center">
                                 {movie.title}
                             </h2>
                             <p className="text-md mb-3">{movie.overview}</p>
@@ -56,7 +56,7 @@ const MovieDetails: React.FC<MovieClientProps> = ({
                                 <span className='font-bold'>Genre:</span>
                                 <div className='grid grid-cols-3 sm:flex flex-row gap-3'>
                                     {movie.genres?.map((genre: any) => (
-                                        <p className='px-5 py-2 bg-white text-black rounded-[20px] font-bold'>{genre}</p>
+                                        <p className='px-5 py-2 bg-white text-black rounded-[20px] font-bold text-center items-center flex justify-center'>{genre}</p>
                                     ))}
                                 </div>
                             </div>

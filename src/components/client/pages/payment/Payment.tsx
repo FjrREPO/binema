@@ -10,6 +10,7 @@ import { SafeMovie, SafePaymentCard, SafePaymentPlan, SafePaymentPromo, SafePaym
 import { FaUser } from 'react-icons/fa';
 import { MdAlternateEmail, MdDateRange } from 'react-icons/md';
 import moment from 'moment';
+import BackButton from '@/components/global/property/BackButton';
 
 function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo, allPayment }: { movie: SafeMovie, paymentPlan: SafePaymentPlan, currentUser: any, paymentCard: SafePaymentCard[], paymentPromo: SafePaymentPromo[], allPayment: SafePayment[] }) {
     const router = useRouter();
@@ -209,6 +210,9 @@ function Payment({ movie, paymentPlan, currentUser, paymentCard, paymentPromo, a
                 backgroundImage: `url(${movie.backdrop_path})`
             }}
         >
+            <div className='absolute top-10 left-10'>
+                <BackButton/>
+            </div>
             <div className="bg-black/50 min-h-[100vh] flex justify-center items-center py-5">
                 <div className="flex flex-col border w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[60vw] rounded-lg w-fit p-5 justify-center items-center">
                     <h1 className="text-lg pb-5 font-bold">Checkout</h1>
