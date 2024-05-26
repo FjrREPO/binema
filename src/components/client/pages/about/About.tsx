@@ -11,9 +11,9 @@ const About = () => {
         setVisibleAnswer(visibleAnswer === index ? null : index);
     };
     const faqs = [
-        { question: "How do I make an appointment online?", answer: "You can book an appointment online through our website or mobile app." },
-        { question: "What types of medical tests do you offer?", answer: "We offer a wide range of medical tests including blood tests, imaging, and more." },
-        { question: "Do you accept insurance plans?", answer: "Yes, we accept most major insurance plans." }
+        { question: "Dimanakah Lokasi Bioskopnya", answer: "Lokasi bioskop berada di Jalan Raya Cempaka Utara no 13 Sambilegi Lor Maguwoharjo Sleman." },
+        { question: "Apakah Bisa Membayar Dengan Uang Cash", answer: "Tentu bisa dengan uang cash,tetapi anda harus datang langsung ke tempat kami." },
+        { question: "Apakah Bisa Memesan Beberapa Ruang Sekaligus", answer: "Iya bisa.Kami menyediakan fitur untuk memesan beberapa ruang bioskop sekaligus." }
     ];
     return (
         <div >
@@ -34,6 +34,10 @@ const About = () => {
                             <div className="transition transform hover:scale-110">
                                 <h3 className="text-xl font-bold text-white">3</h3>
                                 <p className="text-blue-400">Pilihan Paket</p>
+                            </div>
+                            <div className="transition transform hover:scale-110">
+                                <h3 className="text-xl font-bold text-white">500+</h3>
+                                <p className="text-blue-400">Pilihan Film</p>
                             </div>
                         </div>
                     </section>
