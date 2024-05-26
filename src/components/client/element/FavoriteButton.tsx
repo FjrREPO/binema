@@ -1,6 +1,5 @@
 'use client'
 
-import { MdOutlineLocalPlay } from "react-icons/md"
 import useFavorite from "@/utils/hooks/useFavorite"
 import { SafeUser } from "@/utils/types/safeData"
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";

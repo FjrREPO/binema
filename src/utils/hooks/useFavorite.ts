@@ -36,6 +36,7 @@ const useFavorite = ({ movieId, currentUser }: IUseFavorite) => {
 
             if (hasFavorited) {
                 request = axios.delete
+                await request(`/api/favorites/${movieId}`)
                 await Swal.fire({
                     icon: 'error',
                     title: 'Unfavorited',
@@ -43,6 +44,7 @@ const useFavorite = ({ movieId, currentUser }: IUseFavorite) => {
                 });
             } else {
                 request = axios.post
+                await request(`/api/favorites/${movieId}`)
                 await Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -50,7 +52,6 @@ const useFavorite = ({ movieId, currentUser }: IUseFavorite) => {
                 });
             }
 
-            await request(`/api/favorites/${movieId}`)
             router.refresh()
             toast.success(hasFavorited ? 'Removed from favorite' : 'Added to favorite')
         } catch (error) {

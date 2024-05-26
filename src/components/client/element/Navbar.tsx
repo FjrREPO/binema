@@ -1,19 +1,18 @@
-import SigninButton from "@/components/global/SigninButton";
 import SearchBox from "@/components/client/element/SearchBox";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { FaBookmark, FaShoppingCart } from "react-icons/fa";
 import { getAllPayment } from "@/utils/actions/get-all-payment";
 import getCurrentUser from "@/utils/actions/get-current-user";
-import NotificationNav from "./NotificationNav";
-import Link from "next/link";
+import NavbarItem from "./property/NavbarItem";
 
 const Navbar = async () => {
-    const session = await getServerSession(authOptions);
-    const payment = await getAllPayment()
-    const currentUser = await getCurrentUser()
+    const [session, payment, currentUser] = await Promise.all([
+        getServerSession(authOptions),
+        getAllPayment(),
+        getCurrentUser()
+    ]);
 
-    const paymentUserId = payment.filter((pay: any) => (pay.userId) == currentUser?.id)
+    const paymentUserId = payment.filter((pay: any) => pay.userId === currentUser?.id);
     const successfulPayments = payment.filter(pay => pay.status === 'success');
 
     return (
@@ -24,16 +23,13 @@ const Navbar = async () => {
                 }}
             >
                 <div className="flex">
-                    <img src="https://res.cloudinary.com/dutlw7bko/image/upload/v1715650495/Cinema/Logo/Cuplikan_layar_2024-05-14_083355_jr8lu6.png" className="w-[60px] rounded-lg h-full" alt="" />
+                    <img 
+                        src="https://res.cloudinary.com/dutlw7bko/image/upload/v1716618897/Cinema/Logo/Cuplikan_layar_2024-05-14_083355_jr8lu6_1_wc2vsh.png" 
+                        className="w-[60px] rounded-lg h-full" 
+                        alt="Cinema Logo" 
+                    />
                 </div>
-                <div className="flex flex-row gap-3 sm:gap-5 items-center">
-                    <Link href="/favorites"><FaBookmark className="w-[28px] h-[28px] duration-300 hover:text-[#d4b60f]" /></Link>
-                    <Link href="#" className="w-fit h-fit">
-                        <NotificationNav pay={successfulPayments} paymentUserId={paymentUserId}/>
-                    </Link>
-                    <Link href="/cart"><FaShoppingCart className="w-[30px] h-[30px] duration-300 hover:text-[#d4b60f]" /></Link>
-                    <SigninButton />
-                </div>
+                <NavbarItem pay={successfulPayments} paymentUserId={paymentUserId} />
             </div>
             <div className="flex flex-row block w-full justify-between px-5 pb-5 pt-3"
                 style={{
@@ -48,11 +44,10 @@ const Navbar = async () => {
                                 backdropFilter: 'blur(8px)',
                                 backgroundColor: 'rgba(128, 128, 128, 0.4)',
                             }}
-
                         >
                             <a href="/about" className="p-[10px]">About</a>
                         </li>
-                        {session?.user.role === 'admin' ?
+                        {session?.user.role === 'admin' && (
                             <li
                                 className="navbar__li rounded-lg"
                                 style={{
@@ -62,15 +57,13 @@ const Navbar = async () => {
                             >
                                 <a href="/admin" className="p-[10px]">Admin</a>
                             </li>
-                            :
-                            <></>
-                        }
+                        )}
                     </ul>
                 </div>
                 <SearchBox />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;

@@ -1,4 +1,3 @@
-import AdminNavbar from "@/components/server/element/AdminNav";
 import AdminMovie from "@/components/server/pages/movie/AdminMovie";
 import getMovie, { IMovieParams } from "@/utils/actions/get-movie";
 
@@ -20,7 +19,6 @@ const Page = async ({ searchParams }: AdminMovieProps) => {
 
     return (
         <div className="bg-[#333] min-h-screen">
-            <AdminNavbar />
             <AdminMovie movies={formattedMovies} />
         </div>
     );
