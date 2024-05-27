@@ -91,16 +91,16 @@ const About = () => {
                     <h2 className="text-2xl font-bold text-center text-white">Fasilitas Yang Didapat</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 max-w-7xl mx-auto">
                         <div className="p-4 shadow-lg rounded-lg bg-gray-700 hover:shadow-xl transition-shadow">
-                            <h3 className="text-xl font-bold text-white">Advanced Diagnostics</h3>
-                            <p className="text-gray-400 mt-2">We utilize the latest technology for accurate diagnostics.</p>
+                            <h3 className="text-xl font-bold text-white">REGULAR</h3>
+                            <p className="text-gray-400 mt-2">Tv 50 inch, fasilitas untuk 6 orang</p>
                         </div>
                         <div className="p-4 shadow-lg rounded-lg bg-gray-700 hover:shadow-xl transition-shadow">
-                            <h3 className="text-xl font-bold text-white">Telemedicine</h3>
-                            <p className="text-gray-400 mt-2">Consult with our specialists from the comfort of your home.</p>
+                            <h3 className="text-xl font-bold text-white">VIP</h3>
+                            <p className="text-gray-400 mt-2">Tv 55 inch, fasilitas untuk 8 orang</p>
                         </div>
                         <div className="p-4 shadow-lg rounded-lg bg-gray-700 hover:shadow-xl transition-shadow">
-                            <h3 className="text-xl font-bold text-white">Robotic Surgery</h3>
-                            <p className="text-gray-400 mt-2">Minimally invasive procedures with precision.</p>
+                            <h3 className="text-xl font-bold text-white">VVIP</h3>
+                            <p className="text-gray-400 mt-2">Tv 60 inch , fasilitas untuk 10 orang</p>
                         </div>
                     </div>
                 </section>
