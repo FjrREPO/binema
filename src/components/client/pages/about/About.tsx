@@ -24,7 +24,7 @@ const About = () => {
                     <section className="text-center py-12 px-4">
                         <h2 className="text-2xl font-bold text-white">Profil kami</h2>
                         <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-                            Binema adalah website penyedia layanan pemesanan ruang bioskop secara online agar memdudahkan pelanggan untuk memesan ruang bioskop.
+                            Binema adalah website penyedia layanan pemesanan ruang mini bioskop secara online agar memudahkan pelanggan untuk melakukan pemesanan kapanpun dan dimanapun.
                         </p>
                         <div className="flex justify-center space-x-8 mt-8 animate-fadeIn">
                             <div className="transition transform hover:scale-110">
@@ -132,10 +132,6 @@ const About = () => {
                         ))}
                     </div>
                 </section>
-
-                <footer className="bg-gray-800 text-white text-center py-8">
-                    <p>&copy; Copyright Binema. All rights reserved</p>
-                </footer>
             </div>
         </div>
     )

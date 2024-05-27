@@ -1,3 +1,4 @@
+import Footer from '@/components/client/element/Footer';
 import Navbar from '@/components/client/element/Navbar'
 import HomePage from '@/components/client/pages/home/HomePage'
 import { getAllMovies } from '@/utils/actions/get-all-movies'
@@ -13,6 +14,7 @@ export default async function Home() {
     >
       <Navbar />
       <HomePage movies={movies} currentUser={currentUser}/>
+      <Footer />
     </main>
   )
 }
